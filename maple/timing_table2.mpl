@@ -18,7 +18,7 @@ time_scalar := []:
 time_mourrain := []:
 time_polscalar := []:
 time_BMS := []:
-
+time_half := []:
 mon := []:
 for i in [seq(k,k=0..50)] do
     mon := [x^i*y^(50-i), op(mon)]:

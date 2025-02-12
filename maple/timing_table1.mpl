@@ -95,6 +95,8 @@ for Gu in GGset do
     Dx:= 2*dx:                 #LMGu[1] = x^dx
     Dy:= 2*dy:                #LMGu[-1] = y^dy
     word := wdeg([dx+1,1], ['y','x']);
+    mon:= sortListMon ([seq (seq (x^i*y^j,j=0..Dy),i=0..Dx)], ord);
+    P:=from1SetToMirrorTruncatedGeneratingSeries (Tab,vars,mon);
 
 #     ####################################
 #     ###      Context  Linear         ###
@@ -110,7 +112,6 @@ for Gu in GGset do
 # #############################
 # ###    AGbb Mourrain      ###
 # #############################
-    # mon:= sortListMon ([seq (seq (x^i*y^j,j=0..Dy),i=0..Dx)], ord);
     # agbb_time := time():
     # AGbb(Tab,vars,mon,word,p):
     # time_mourrain := [op(time_mourrain), time() - agbb_time]:
@@ -134,8 +135,6 @@ for Gu in GGset do
 # # ####################################
 # # ###    Context  Polynomial       ###
 # # ####################################
-    ord := plex(y,x);
-    P:=from1SetToMirrorTruncatedGeneratingSeries (Tab,vars,mon);
 
 # # # # # Call to 'Euclid'
 # # # #     euclid_time := time():
