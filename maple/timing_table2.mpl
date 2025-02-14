@@ -13,7 +13,6 @@ kernelopts(numcpus=1):
 p := 65521;
 vars := [x,y];
 ord := plex(y,x);                        # y > x
-size_Gu := 0:
 time_scalar := []:
 time_mourrain := []:
 time_polscalar := []:
@@ -26,6 +25,10 @@ end do:
 Gu := gblex(mon, p):
 LMGb := [seq(LeadingMonomial(Gu[i], plex(y,x)), i=1..nops(Gu))]:
 if (mon = LMGb) then print("gblex ok"): else print("gblex not ok"): end if:
+sizeGu:= 0 :
+for f in Gu do
+    sizeGu := sizeGu + nops(f):
+end do:
 
 
 for k in [seq(10*j, j=1..5)]do
@@ -38,7 +41,6 @@ for k in [seq(10*j, j=1..5)]do
     Dy:= k*dy:                #LMGu[-1] = y^dy
     word := wdeg([dx+1,1], ['y','x']);
     mon:= sortListMon ([seq (seq (x^i*y^j,j=0..Dy),i=0..Dx)], ord);
-    ord := plex(y,x);
     P:=from1SetToMirrorTruncatedGeneratingSeries (Tab,vars,mon);
 
 
@@ -81,7 +83,7 @@ for k in [seq(10*j, j=1..5)]do
 
 # Call to 'half-gcd'
     half_time := time();
-    G_half := BM_halfgcd_twovar(P, Dy);
+    G_half := GuessingBivar(P);
     time_half := [op(time_half), time() - half_time];
 
 

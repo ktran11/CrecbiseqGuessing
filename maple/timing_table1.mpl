@@ -14,12 +14,12 @@ p := 65521;
 vars := [x,y];
 ord := plex(y,x);                        # y > x
 
-time_scalar_adaptative := [];
-time_BMS := [];
+time_scalar_adaptative := []:
+time_BMS := []:
 time_mourrain := []:
 time_half := []:
 size_Gu := 0:
-size_stair := [];
+size_stair := []:
 
 #############
 #  Simplex  #
@@ -60,26 +60,7 @@ for j in deltax do
     #   if (mon = LMGb) then print("gblex ok"): else print("gblex not ok"): end if:
 end do:
 
-############
-#  Lshape3 #
-############
-GGL3shape := []:
-deltax := [seq(60 + 60*i, i=5..10)]:
-for j in deltax do
-    mon := [x^j, x*y, y^(3*j)]:
-    # dx := degree(mon[1]):
-    # dy := degree(mon[-1]):
-    # print(nops(mon)*dx*dy):
-
-    Gb := gblex(mon,p):
-    GGL3shape := [op(GGL3shape), Gb]:
-
-    LMGb := [seq(LeadingMonomial(Gb[i], plex(y,x)), i=1..nops(Gb))]:
-
-    #  if (mon = LMGb) then print("gblex ok"): else print("gblex not ok"): end if:
-end do:
-
-GGset := [op(GGL2shape), op(GGL3shape)]:
+GGset := [op(GGsimplex), op(GGL2shape)]:
 
 for Gu in GGset do
     sizeGu:= 0 :
@@ -144,7 +125,7 @@ for Gu in GGset do
 
 #    Call to 'half-gcd'
     half_time := time();
-    G_half := BM_halfgcd_twovar(P, Dy);
+    G_half := GuessingBivar(P);
     time_half := [op(time_half), time() - half_time];
 
     print(nops(Gu)*dx*dy, Dx*Dy, sizeGu, time_half[-1]):

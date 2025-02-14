@@ -42,16 +42,13 @@ local r0,r1,r,u,v:
 end proc:
 
 
-truncate := proc(r, n)
+harpoon_x := proc(r, k)
 description "compute the polynomial formed by the n first coefficients of high degree "
     "of r":
 local L, m , res:
     res := r:
-    if (1 > n) then
-        return res:
-    end if:
     L := CoefficientList(res,x, termorder = reverse):
-    m := min(n, degree(res)):
+    m := min(k, degree(res,x)):
     res := FromCoefficientList(L[1..m+1], x , termorder = reverse):
     return res:
 end proc:
@@ -62,8 +59,8 @@ local d, dstar, r0_trunc, r1_trunc, rd, rdm1, rd1, rd_trunc, rd1_trunc, qd, Qd, 
     if k = 0 then return Matrix([[1,0],[0,1]]):
     end if:
     d := ceil(k/2):
-    r0_trunc := truncate(r0, 2*(d-1)):
-    r1_trunc := truncate(r1, 2*(d-1)-1):
+    r0_trunc := harpoon_x(r0, 2*(d-1)):
+    r1_trunc := harpoon_x(r1, 2*(d-1)-1):
 
     R := half_gcd(r0_trunc, r1_trunc, d-1):
     v := R.Vector([[r0],[r1]]) mod p:
@@ -78,8 +75,8 @@ local d, dstar, r0_trunc, r1_trunc, rd, rdm1, rd1, rd_trunc, rd1_trunc, qd, Qd, 
     end if:
 
     dstar := floor(k/2):
-    rd_trunc :=  truncate(rd, 2*dstar):
-    rd1_trunc := truncate(rd1, 2*dstar -1):
+    rd_trunc :=  harpoon_x(rd, 2*dstar):
+    rd1_trunc := harpoon_x(rd1, 2*dstar -1):
     S := half_gcd(rd_trunc, rd1_trunc, dstar):
 
     return map(expand, S.Qd.R) mod p:
@@ -99,10 +96,14 @@ local k,P,u,v,g,c:
     return (g/c mod p, u/c mod p, v/c mod p):
 end proc:
 
-BM_halfgcd := proc(P,Dx)
+GuessingUnivar := proc(P)
 description "find a relation on P with the half gcd method":
-local R:
-    R := half_gcd(x^(Dx+1), P, Dx+1):
+local Dx, k, rdm1, r0, R:
+    Dx := degree(P,x):
+    k := floor(Dx/2):
+    rdm1 := x^(Dx+1):
+    r0 := P:
+    R := half_gcd(rdm1, r0, k):
     if degree(R[2,2]) < Dx then
         return R[2,2]/lcoeff(R[2,2]) mod p:
     else
@@ -110,57 +111,57 @@ local R:
     end if:
 end proc:
 
-#######################
-###     Context     ###
-#######################
+# #######################
+# ###     Context     ###
+# #######################
 
-##################
-# Computing xgcd #
-##################
-h := x^l + randpoly(x, coeffs = rand(0..p-1), dense, degree = l-1);
-r0 := randpoly(x, coeffs = rand(0..p-1), dense, degree = n-l) * h mod p:
-r1 := randpoly(x, coeffs = rand(0..p-1), dense,  degree = n-1-l) * h mod p:
-(g,u,v) := xgcd_from_halfgcd(r0,r1);
-if g=h and g = expand(u*r0 + v*r1) mod p then
-    print("xgcd ok")
-else
-    print("xgcd not ok"):
-end if;
+# ##################
+# # Computing xgcd #
+# ##################
+# h := x^l + randpoly(x, coeffs = rand(0..p-1), dense, degree = l-1);
+# r0 := randpoly(x, coeffs = rand(0..p-1), dense, degree = n-l) * h mod p:
+# r1 := randpoly(x, coeffs = rand(0..p-1), dense,  degree = n-1-l) * h mod p:
+# (g,u,v) := xgcd_from_halfgcd(r0,r1);
+# if g=h and g = expand(u*r0 + v*r1) mod p then
+#     print("xgcd ok")
+# else
+#     print("xgcd not ok"):
+# end if;
 
-############################
-#     Computing sequence   #
-############################
+# ############################
+# #     Computing sequence   #
+# ############################
 
-######################
-# Build the sequence #
-######################
-r := randpoly(x, coeffs = rand(1..p-1), dense, degree = n):
-G := [r*LeadingCoefficient(r, plex(x))^(-1) mod p];
-Dx := 2*degree(G[1]):
-Tab := fromGbToRandomSequence(G, [x], plex(x), p):
-mon := sortListMon ([seq (x^i,i=0..Dx-1)], plex(x)):
-P := from1SetToMirrorTruncatedGeneratingSeries (Tab,[x],mon):
+# ######################
+# # Build the sequence #
+# ######################
+# r := randpoly(x, coeffs = rand(1..p-1), dense, degree = n):
+# G := [r*LeadingCoefficient(r, plex(x))^(-1) mod p];
+# Dx := 2*degree(G[1]):
+# Tab := fromGbToRandomSequence(G, [x], plex(x), p):
+# mon := sortListMon ([seq (x^i,i=0..Dx-1)], plex(x)):
+# P := from1SetToMirrorTruncatedGeneratingSeries (Tab,[x],mon):
 
-####################
-# Via naive method #
-####################
-#trace(BM_Euclid):
-rstar := BM_Euclid(P,Dx):
-if (rstar = G[1]) then
-          print("BM_Euclid ok"):
-else
-    print("BM Euclid not ok"):
-end if:
+# ####################
+# # Via naive method #
+# ####################
+# #trace(BM_Euclid):
+# rstar := BM_Euclid(P,Dx):
+# if (rstar = G[1]) then
+#           print("BM_Euclid ok"):
+# else
+#     print("BM Euclid not ok"):
+# end if:
 
-################
-# Via half-gcd #
-###############
-rstar := BM_halfgcd(P, Dx):
-if (rstar = G[1]) then
-    print("BM_halfgcd ok"):
-else
-    print(rstar, G[1], "BM_halfgcd not ok"):
-end if:
+# ################
+# # Via half-gcd #
+# ###############
+# rstar := BM_halfgcd(P, Dx):
+# if (rstar = G[1]) then
+#     print("BM_halfgcd ok"):
+# else
+#     print(rstar, G[1], "BM_halfgcd not ok"):
+# end if:
 
 ###############
 # Limit case  #
