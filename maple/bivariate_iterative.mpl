@@ -80,7 +80,7 @@ local DDx, a, b, lcr0, lcr1, r2temp, lcr2temp, d0, g0, d1, g1, d:
     d1 := degree(g1,x):
 # deg(r2temp) = deg(r1)
     r2temp := Extraction_xaxis(y*r1-a*r0 mod p, d1, DDx):
-    r2temp := Extension_twovar_onerelation(r2temp, g1, DDx):
+    r2temp := Extension_twovar_onerelation(r2temp, g1, 2*degree(g1,x)):
     lcr2temp := coeff(r2temp, y^(d-1)):
     b := Hankel_solver_onevar(lcr1, lcr2temp, d1):
 

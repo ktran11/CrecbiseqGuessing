@@ -33,8 +33,8 @@ local d, dstar, rm1_trunc, r0_trunc, R, T, F0, v, rdm2, rdm1, Qdm1, fdm1, Rd, rd
     # Update r0,r1 -> rd-1, rd
     v := R.Vector([[rm1],[r0]]) mod p:
 
-    rdm2 := Extension_twovar_onerelation(Extraction_xaxis(v[1],degree(f0,x), DDx), f0, DDx):
-    rdm1 := Extension_twovar_onerelation(Extraction_xaxis(v[2],degree(f0,x), DDx), f0, DDx):
+    rdm2 := Extension_twovar_onerelation(Extraction_xaxis(v[1],degree(f0,x), DDx), f0, 2*degree(f0,x)):
+    rdm1 := Extension_twovar_onerelation(Extraction_xaxis(v[2],degree(f0,x), DDx), f0, 2*degree(f0,x)):
 
     if (degree(rdm2,y) <> degree(rdm1,y) + 1) then return R, T, F0 end if:
 
@@ -42,7 +42,7 @@ local d, dstar, rm1_trunc, r0_trunc, R, T, F0, v, rdm2, rdm1, Qdm1, fdm1, Rd, rd
     Rd := map(proc(t) Rem(t, f0, x) mod p end proc, Qdm1.R):
     v := Rd.Vector([[rm1],[r0]]) mod p:
 
-    rd := Extension_twovar_onerelation(Extraction_xaxis(v[2],degree(f0,x), DDx), f0, DDx):
+    rd := Extension_twovar_onerelation(Extraction_xaxis(v[2],degree(f0,x), DDx), f0, 2*degree(f0,x)):
 
     rdm1_trunc := harpoon_y(rdm1, 2*dstar):
     rd_trunc := harpoon_y(rd, 2*dstar-1):
