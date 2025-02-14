@@ -422,6 +422,31 @@ description "Makes the miror of the truncated generating series of Tab for "
                              var,lcm(op(set_mon1))*lcm(op(set_mon2)));
 end proc:
 
+
+fromGbToRandomSequence:= proc (G,vars,mon_order,p:=mychar)
+description "Returns a random table in characteristic p"
+    "whose ideal of relations is <G>"
+    "if <G> is Gorenstein or contains <G> otherwise.";
+local Tab,lmG,remG,roll,i;
+    lmG := map (g->Groebner:-LeadingMonomial (g,mon_order), G);
+    remG:= [seq (redp (lmG[i]-G[i], p),i=1..nops(G))];
+    roll:= `if`(p=0,rand(-2^16..2^16-1),rand(0..p-1));
+    Tab := proc ()
+    option remember;
+    local idx,m,i;
+        idx:= [_passed];
+        m  := mul (vars[i]^idx[i],i=1..nops(idx));
+        for i from 1 to nops (lmG) do
+            if divide (m,lmG[i],'q') then
+                return fromPolToTabRelation (thisproc,vars,q*remG[i],p);
+            end if:
+        end do:
+        return roll ();
+    end proc;
+    return Tab;
+end proc:
+
+
 ###################
 # Main procedures #
 ###################
