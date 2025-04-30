@@ -22,7 +22,7 @@ We have the parameter $d_x = 5, d_y = 3$ and set $D_x = 10, D_y = 6$.
 
 # Input of the pseudo-Euclidean algorithm
 
-$r_{-1} := (29x^{10}+5x^9+31x^8+39x^7+23x^6+18x^5+58x^4+53x^3+38x^2+36x+83)y^7$
+$$r_{-1} := (29x^{10}+5x^9+31x^8+39x^7+23x^6+18x^5+58x^4+53x^3+38x^2+36x+83)y^7$$
 
 and 
 
@@ -42,9 +42,7 @@ $$
 # Computation of the Quotient matrix and the relation of $v_{\ast, 0}$
 First we compute the C-relation on the first slice $lc(r_0)$ 
 
-$f_0 = GuessingUnivar(lc(r_0))$; 
-	
-	x^5+60x^4+45x^3+77x^2+10x+28
+$f_0 = GuessingUnivar(lc(r_0)) = x^5+60x^4+45x^3+77x^2+10x+28$
 
 Since $lc(r_0) = lc(r_{-1})$ we deduce that $a_0 = -1$ and 
 
