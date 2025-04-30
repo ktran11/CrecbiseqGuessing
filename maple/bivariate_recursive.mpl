@@ -100,31 +100,32 @@ end proc:
 ####################################
 ###            Context           ###
 ####################################
-p := 65537:
-vars := [x,y]:
-ord := plex(y,x):                        # y > x
-F := [seq(randpoly(vars, dense, degree=1)^5, i=1..2)]:
+# p := 65537:
+# vars := [x,y]:
+# ord := plex(y,x):                        # y > x
+# F := [seq(randpoly(vars, dense, degree=1)^2, i=1..2)]:
 # Gu := Groebner:-Basis (F,ord, characteristic = p);
-leadm := [x^10, x*y,y^5]:
-Gu := gblex(leadm, p):
-Gux := [seq(lcoeff(Gu[i], y), i = 1..nops(Gu))]:
-LMGu := LeadingMonomial(Gu, ord):
-Dx:= 10*degree(LMGu[1]):                 #LMGu[1] = x^dx
-Dy:= 10*degree(LMGu[-1]):                #LMGu[-1] = y^dy
-M:= x^Dx*y^Dy;
-Tab := fromGbToRandomSequence(Gu, vars, ord, p):
-mon:= sortListMon ([seq (seq (x^i*y^j,j=0..Dy),i=0..Dx)], ord):
-P:=from1SetToMirrorTruncatedGeneratingSeries (Tab,vars,mon) mod p:
+# # leadm := [x^10, x*y,y^5]:
+# # Gu := gblex(leadm, p):
+# Gux := [seq(lcoeff(Gu[i], y), i = 1..nops(Gu))]:
+# LMGu := LeadingMonomial(Gu, ord):
+# Dx:= 10*degree(LMGu[1]):                 #LMGu[1] = x^dx
+# Dy:= 5*degree(LMGu[-1]):                #LMGu[-1] = y^dy
+# M:= x^Dx*y^Dy;
+# Tab := fromGbToRandomSequence(Gu, vars, ord, p):
+# mon:= sortListMon ([seq (seq (x^i*y^j,j=0..Dy),i=0..Dx)], ord):
+# P:=from1SetToMirrorTruncatedGeneratingSeries (Tab,vars,mon) mod p:
 
-# ###############################
-# # Compute the reduced Gröbner #
-# # basis of (u_{i,j})          #
-# ###############################
-Gres := GuessingBivar(P):
-Gres := Basis(Gres,ord, characteristic=p):
-if Gu = Gres then
-          print("BM_halfgcd_twovar ok"):
-else
-    print("BM_halfgcd_twovar not ok"):
-end if:
+# r,u,v,G := Truncated_Euclidean_twoindseq(y^(Dy+1), P);
+# # ###############################
+# # # Compute the reduced Gröbner #
+# # # basis of (u_{i,j})          #
+# # ###############################
+# Gres := GuessingBivar(P):
+# Gres := Basis(Gres,ord, characteristic=p):
+# if Gu = Gres then
+#           print("BM_halfgcd_twovar ok"):
+# else
+#     print("BM_halfgcd_twovar not ok"):
+# end if:
 

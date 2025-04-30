@@ -276,17 +276,19 @@ local tmp,rHP,LHP,i;
     return tmp;
 end proc:
 
+
+
 orthProj:= proc (f,p,m,n,b,xvar,Tab,myprime:=0)
 local g,xalph;
     g:= f;
     for xalph in b do
-        g:= redp (g - fromPolToTabRelation (Tab,xvar,g*m[xalph])*p[xalph],myprime);
+        g:= redp (g - fromPolToTabRelation (Tab,xvar,g*m[xalph],myprime)*p[xalph],myprime);
     end do:
     return g;
 end proc:
 
 nnext:= proc (n,xvar,b,d,c,s)
-local nn,a,bb,i;
+local nn,a, bb, i;
     nn:= [op({seq (seq (bb*xvar[i],i=1..n), bb in b)})];
     nn:= remove (i->(i in b),nn);
     nn:= select (i->(i in s),nn);
@@ -295,6 +297,79 @@ local nn,a,bb,i;
     nn:= select (i->({op(expand (i*c))} subset (a)),nn);
     return nn;
 end proc:
+
+AGbb:= proc (Tab,xvar,a,mon_order,myprime)
+local b,m,c,d,nn,s,t,l,p,q,k,n;
+local xalph,palph,xgam,xgam_palph,malph,xgam_palphEval,boolgam,supp;
+    n:= nops(xvar):
+    b:=[];
+    c:=[];
+    d:= [];
+    nn:=[1];
+    s:= a;
+    t:= a;
+    p:= table ([]); m:= table ([]); q:= table ([]); k:= table ([]);
+    userinfo (2,AGbb,`set of terms`,nn);
+    while (nn <> []) do
+        for xalph in [nn[1]] do
+            userinfo (1,AGbb,`xalpha`,xalph);
+            palph:= orthProj (xalph,p,m,n,b,xvar,Tab,myprime);
+            userinfo (2,AGbb,`palpha`,palph);
+            p[xalph]:= palph;
+            boolgam:= false;
+            for xgam in t do
+                userinfo (1,AGbb,`\txgamma`,xgam);
+                xgam_palph    := xgam*palph;
+                xgam_palphEval:= redp (fromPolToTabRelation (Tab,xvar,xgam_palph,myprime),
+                                       myprime);
+                coeffs (xgam_palph,xvars,'supp'):
+                supp:= {supp}:
+                if (supp subset {op(a)} and
+                    xgam_palphEval <> 0) then
+                    boolgam:= true;
+                    userinfo (2,AGbb,`\txgamma`,xgam,`!`);
+                    break;
+                end if:
+            end do:
+            if (boolgam) then
+                if (myprime = 0) then
+                    malph:= xgam/xgam_palphEval;
+                else
+                    malph:= xgam/xgam_palphEval mod myprime;
+                end if:
+                m[xalph]:= malph;
+                userinfo (2,AGbb,`\tmalph`,malph);
+                # q[xalph]:= orthProj (malph,q,p,n,b,xvar,Tab,myprime);
+                # b:= [op({op(b),xalph})];
+                b:= [op(b),xalph];
+                userinfo (2,AGbb,`\tnew b`,b);
+                s:= remove (i->i=xalph,s);
+                userinfo (2,AGbb,`\tnew s`,s);
+                # c:= [op({op(c),xgam})];
+                c:= [op(c),xgam];
+                userinfo (2,AGbb,`\tnew c`,c);
+                t:= remove (i->i=xgam,t);
+                userinfo (2,AGbb,`\tnew t`,t);
+            else
+                userinfo (2,AGbb,`\tno xgam !!`);
+                k[xalph]:= palph;
+                userinfo (1,AGbb,`relation`,xalph,`\n\t\t OK`);
+                d:= [op({op(d),xalph})];
+                userinfo (2,AGbb,`\tnew d`,d);
+                s:= remove (i->i=xalph,s);
+                userinfo (2,AGbb,`\tnew s`,s);
+            end if:
+        end do:
+        nn:= nnext (n,xvar,b,d,c,s);
+        nn:= sortListMon (nn,mon_order);
+        userinfo (2,AGbb,`set of terms`,nn);
+        if (xalpha = x^3) then return;
+        end if:
+    end do:
+    return b,c,p,m,q,k,d;
+end proc:
+
+
 
 # return 1st  monomial s such that s*R fails, -1 if no such monomial exists.
 # return last monomial s such that s*R has been tested.
@@ -648,73 +723,6 @@ local H,firstIndRows,usefulStaircase,fullStaircase,firstIndCols,
     else
         return R;
     end if:
-end proc:
-
-AGbb:= proc (Tab,xvar,a,mon_order,myprime)
-local b,m,mm,c,d,cc,nn,s,t,l,p,q,k,n;
-local xalph,palph,xgam,xgam_palph,malph,xgam_palphEval,boolgam,supp;
-    n:= nops(xvar):
-    b:=[];
-    c:=[];
-    d:= [];
-    nn:=[1];
-    s:= a;
-    t:= a;
-    p:= table ([]); q:= table ([]); k:= table ([]);
-    userinfo (2,AGbb,`set of terms`,nn);
-    while (nn <> []) do
-        for xalph in nn do
-            userinfo (1,AGbb,`xalpha`,xalph);
-            palph:= orthProj (xalph,p,m,n,b,xvar,Tab,myprime);
-            userinfo (2,AGbb,`palpha`,palph);
-            p[xalph]:= palph;
-            boolgam:= false;
-            for xgam in t do
-                userinfo (1,AGbb,`\txgamma`,xgam);
-                xgam_palph    := xgam*palph;
-                xgam_palphEval:= redp (fromPolToTabRelation (Tab,xvar,xgam_palph),
-                                       myprime);
-                coeffs (xgam_palph,xvars,'supp'):
-                supp:= {supp}:
-                if (supp subset {op(a)} and
-                    xgam_palphEval <> 0) then
-                    boolgam:= true;
-                    userinfo (2,AGbb,`\txgamma`,xgam,`!`);
-                    break;
-                end if:
-            end do:
-            if (boolgam) then
-                if (myprime = 0) then
-                    malph:= xgam/xgam_palphEval;
-                else
-                    malph:= xgam/xgam_palphEval mod myprime;
-                end if:
-                m[xalph]:= malph;
-                userinfo (2,AGbb,`\tmalph`,malph);
-                # q[xalph]:= orthProj (malph,q,p,n,b,xvar,Tab,myprime);
-                b:= [op({op(b),xalph})];
-                userinfo (2,AGbb,`\tnew b`,b);
-                s:= remove (i->i=xalph,s);
-                userinfo (2,AGbb,`\tnew s`,s);
-                mm:= [op(mm),xgam];
-                c:= [op({op(c),xgam})];
-                userinfo (2,AGbb,`\tnew c`,c);
-                t:= remove (i->i=xgam,t);
-                userinfo (2,AGbb,`\tnew t`,t);
-            else
-                userinfo (2,AGbb,`\tno xgam !!`);
-                k[xalph]:= palph;
-                userinfo (1,AGbb,`relation`,xalph,`\n\t\t OK`);
-                d:= [op({op(d),xalph})];
-                userinfo (2,AGbb,`\tnew d`,d);
-                s:= remove (i->i=xalph,s);
-                userinfo (2,AGbb,`\tnew s`,s);
-            end if:
-        end do:
-        nn:= nnext (n,xvar,b,d,c,s);
-        userinfo (2,AGbb,`set of terms`,nn);
-    end do:
-    return b,p,m,q,k,d;
 end proc:
 
 PolynomialScalarFGLM_guessing:= proc (Tab,xvar,cols_mon,mon_ord:=tdeg(op(xvar)),myprime:=65521)

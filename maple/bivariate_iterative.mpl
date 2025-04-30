@@ -91,17 +91,18 @@ Truncated_Euclidean_twoindseq := proc(r0,r1)
 description "For two polynomials with coefficients in sequence ring computes the "
     "consecutive  remainder r=(ri) and the cofactors u = (ui), v = (vi) also its "
     "computes the":
-local G, r, u, v, i, Qi, gi, ri1, ui1, vi1:
+local DDx, G, r, u, v, i, Qi, gi, ri1, ui1, vi1:
     G := []:
     r := [r0, r1]:
     u := [1,0]:
     v := [0,1]:
+    DDx := degree(r1,x):
     for i from 2 to degree(r0,y) + 1 while degree(r[i],y) >= degree(v[i],y) do
         Qi, gi := Quo_twovar(r[i-1], r[i]):
         G := [op(G), gi]:
         # TODO comment
-        ri1 := Extraction_xaxis(Qi[2,1]*r[i-1] + Qi[2,2]*r[i], degree(G[1])):
-        ri1 := sort(expand(Extension_twovar_onerelation(ri1, G[1]) mod p, order = ord)):
+        ri1 := Extraction_xaxis(Qi[2,1]*r[i-1] + Qi[2,2]*r[i], degree(G[1]), DDx):
+        ri1 := sort(expand(Extension_twovar_onerelation(ri1, G[1], DDx) mod p, order = ord)):
         r := [op(r), sort(expand(ri1) mod p, order = ord)]:
         u := [op(u), sort(expand(Qi[2,1]*u[i-1] + Qi[2,2]*u[i]) mod p, order = ord)]:
         v := [op(v), sort(expand(Qi[2,1]*v[i-1] + Qi[2,2]*v[i]) mod p, order = ord)]:
@@ -115,7 +116,7 @@ description "Generalization of the BM algorithm for 2-indiced C-recursive sequen
     "computation of the relation done iteratively with recursive call to the uni-indiced "
     "sequence computed with Euclid algorithm":
 local r0, r1, G, r, u, v, i:
-    r0 := y^(Dy+1):
+    r0 := coeff(P, y^Dy)*y^(Dy+1):
     r1 := P:
     r,u,v,G := Truncated_Euclidean_twoindseq(r0, r1):
     G := [seq(v[i+1] * G[i], i=1..nops(G))]:
