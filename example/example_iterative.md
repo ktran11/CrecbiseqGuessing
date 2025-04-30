@@ -102,6 +102,7 @@ reconstruct a Gröbner basis of the ideal of relation.
 
 The next computations correspond to the iterative version of the ones done in
 Algorithm 3 GuessingBivar(𝒖) in the loop on line 6
+
 $Q10 := Q1.Q0$ 
 
 	[[96, y+4*x^4+53*x^3+33*x^2+92*x+59],[96*y+72*x^2+7*x+19,
@@ -111,7 +112,7 @@ $t1 := Q10[1,2]$
 	
 	y+4*x^4+53*x^3+33*x^2+92*x+59
 
-$g1 := t1*f1 rem f0$
+$g1 := t1*f1$ rem $f0$
 
 	(x^3+x^2+84*x+69)*y+ 30*x^4+59*x^3+27*x^2+44*x+61
 
@@ -125,7 +126,7 @@ $t2 := Q20[1,2]$
 
 	y^2+(4*x^4+53*x^3+58*x^2+85*x+40)*y+72*x^4+67*x^3+74*x^2+23*x+83
 
-$g2 := t2*f2 rem f0$
+$g2 := t2*f2$ rem $f0$
 
 	(x^2+34*x+42)*y^2+
 	(58*x^4+62*x^3+38*x^2+90*x+4)*y+
