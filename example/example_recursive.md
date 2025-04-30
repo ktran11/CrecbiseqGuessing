@@ -1,4 +1,4 @@
-In the following, we run a small example of an iterative version of our algorithm
+In the following, we run the same example as in example_iterative.md of our algorithm
 Algorithm 3 GuessingBivar(𝒖).
 
 # Context
@@ -18,7 +18,7 @@ basis $G_{u}$
 We have the parameter $d_x = 5, d_y = 3$ and set $D_x = 10, Dy = 6$.
 
 
-# Input of the pseudo-Euclidean algorithm
+# Input of half-gcd-seq
 In :
 $r_{-1} :=$
 
@@ -35,35 +35,61 @@ $r_0 :=$
 	(11*x^10+9*x^9+61*x^8+23*x^7+24*x^6+93*x^5+19*x^4+7*x^3+89*x^2+10*x+16)*y +
 	(77*x^10+17*x^9+3*x^8+8*x^7+13*x^6+86*x^5+20*x^4+70*x^3+49*x^2+70*x+50)*1
 
+$k := $
 
-# Computation of the Quotient matrix and the relation of $v_{\ast, 0}$
-First we compute the C-relation on the first slice $lc(r_0)$ 
+	3
 
-$f_0 = GuessingUnivar(lc(r_0))$; 
+$f_0 := $
 	
-	x^5+60*x^4+45*x^3+77*x^2+10*x+28
+	$x^5+60*x^4+45*x^3+77*x^2+10*x+28$
 
-Since $lc(r_0) = lc(r_{-1})$ we deduce that $a_0 = -1$ and 
+# First computation 
 
-$r_1temp := y*r_0 + a_0 r_{-1}$; 
+with $r_{-1} :=$ 
 
-	(79*x^10+95*x^9+10*x^8+45*x^7+66*x^6+74*x^5+42*x^4+75*x^3+57*x^2+90*x+64)*y^6+
-	(22*x^10+40*x^9+x^8+35*x^7+47*x^6+41*x^5+39*x^4+63*x^3+43*x^2+41*x+80)*y^5+
-	(38*x^10+80*x^9+91*x^8+65*x^7+38*x^5+41*x^4+4*x^3+56*x^2+4*x+17)*y^4+
-	(3*x^10+20*x^9+67*x^8+78*x^7+50*x^6+75*x^5+79*x^4+26*x^3+6*x^2+34*x+73)*y^3+
-	(11*x^10+9*x^9+61*x^8+23*x^7+24*x^6+93*x^5+19*x^4+7*x^3+89*x^2+10*x+16)*y^2+
-	(77*x^10+17*x^9+3*x^8+8*x^7+13*x^6+86*x^5+20*x^4+70*x^3+49*x^2+70*x+50)*y
-
-
-$b_0 := HankelSolver(lc(r_0), lc(r_1temp), f_0)$: 
-
-We can then compute the quotient matrix $Q_0$
+	(29*x^10 + 5*x  + 31*x  + 39*x  + 23*x  + 18*x  + 58*x  + 53*x  + 38*x  +
+	36*x + 83)*y^2
 	
-	[[0 , 1], 
-	[96 ,  y + 4*x^4+53*x^3+33*x^2+92*x+59]]
+and $r_0 := $
+
+	79*x^10+ 95*x^9  + 10*x^8 + 45*x^7  + 66*x^6  + 74*x^5  + 42*x^4  +
+	75*x^3+ 57*x^2  + 90*x + 64 +
+	(29*x^10+ 5*x^9  + 31*x^8  + 39*x^7  + 23*x^6  + 18*x^5  + 58*x^4  +
+	53*x^3  + 38*x^2  + 36*x + 83)*y
 	
-also obtain the next remainder $r1 := a_0 r_{-1} + (y-b_0) r_0$
 	
+we obtain $Q_0, f_0$ 	
+	
+	[[0,1],
+	[96 ,  y + 4*x^4+53*x^3+33*x^2+92*x+59]],  x^5+60*x^4+45*x^3+77*x^2+10*x+28
+
+
+and call recursively with the input 
+$r_{0}$ 
+
+	(29*x^10+ 5*x^9  + 31*x^8  + 39*x^7  + 23*x^6  + 18*x^5  + 58*x^4  +
+	53*x^3  + 38*x^2  + 36*x + 83)$
+	
+and 
+$r_1$ 
+
+	0
+
+
+# Second computation 
+
+with $r_0$
+
+	(29*x^10+5*x^9+31*x^8+39*x^7+23*x^6+18*x^5+58*x^4+53*x^3+38*x^2+36*x+83)*y^6 +
+	(79*x^10+95*x^9+10*x^8+45*x^7+66*x^6+74*x^5+42*x^4+75*x^3+57*x^2+90*x+64)*y^5 +
+	(22*x^10+40*x^9+x^8+35*x^7+47*x^6+41*x^5+39*x^4+63*x^3+43*x^2+41*x+80)*y^4 +
+	(38*x^10+80*x^9+91*x^8+65*x^7+38*x^5+41*x^4+4*x^3+56*x^2+4*x+17)*y^3 +
+	(3*x^10+20*x^9+67*x^8+78*x^7+50*x^6+75*x^5+79*x^4+26*x^3+6*x^2+34*x+73)*y^2 +
+	(11*x^10+9*x^9+61*x^8+23*x^7+24*x^6+93*x^5+19*x^4+7*x^3+89*x^2+10*x+16)*y +
+	(77*x^10+17*x^9+3*x^8+8*x^7+13*x^6+86*x^5+20*x^4+70*x^3+49*x^2+70*x+50)*1
+		
+and $r_1$
+
 	(9*x^10+10*x^9+38*x^8+53*x^7+42*x^6+62*x^5+28*x^4+14*x^3+49*x^2+44*x+15)*y^5+
 	(11*x^10+37*x^9+72*x^8+38*x^7+91*x^6+91*x^5+22*x^4+23*x^3+95*x^2+44*x+89)*y^4+
 	(48*x^10+83*x^9+14*x^8+81*x^7+87*x^5+47*x^4+17*x^3+23*x^2+59*x+37)*y^3+
@@ -71,40 +97,47 @@ also obtain the next remainder $r1 := a_0 r_{-1} + (y-b_0) r_0$
 	(32*x^10+27*x^9+69*x^8+14*x^7+87*x^6+87*x^5+78*x^4+94*x^3+58*x^2+50*x+38)*y+
 	86*x^10+54*x^9+63*x^8+26*x^7+53*x^6+73*x^5+52*x^4+3*x^3+10*x^2+31*x+36
 
-  
-# Computation of $Q_1, f_1$ and $r_2$ 
+and obtain $Q_1, f_1$ 
 
-With the same method, we can compute $Q_1, f_1$
-	
 	[[0,1], [16*x^4+31*x^3+64*x^2+52*x+82, y + 25*x^2+90*x+78]],x^3+x^2+84*x+69
 
-and the remainder $r_2$ by construction we have eliminate the coefficient in $y^5$
 
-	(84*x^10+42*x^9+88*x^8+94*x^7+92*x^6+5*x^5+40*x^4+79*x^3+96*x^2+14*x+51)*y^4+
-	(41*x^10+90*x^9+68*x^8+19*x^7+87*x^6+27*x^5+84*x^4+84*x^3+18*x^2+31*x+33)*y^3+
-	(64*x^10+73*x^9+68*x^8+54*x^7+61*x^6+23*x^5+51*x^4+16*x^3+30*x^2+54*x+8)*y^2+
-	(13*x^10+38*x^9+13*x^8+55*x^7+90*x^6+80*x^5+77*x^4+38*x^3+11*x^2+21*x+69)*y+
-	 37*x^10+17*x^9+61*x^8+30*x^7+48*x^6+52*x^5+54*x^4+65*x^3+83*x^2+41*x+93
+then do a recursive call with input $r_1$ 
 
-# Computation of $Q_2, f_2$ and $r_3$ 
-We continue for the computation of the remainder $r_3$, we have the quotient
-matrix $Q_2$ and the C-relation $f_2$
+	(9*x^10+10*x^9+38*x^8+53*x^7+42*x^6+62*x^5+28*x^4+14*x^3+49*x^2+44*x+15)*y^2+
+	(11*x^10+37*x^9+72*x^8+38*x^7+91*x^6+91*x^5+22*x^4+23*x^3+95*x^2+44*x+89)*y+
+	(48*x^10+83*x^9+14*x^8+81*x^7+87*x^5+47*x^4+17*x^3+23*x^2+59*x+37)
+
+and $r_2$ 
+
+	(84*x^10+42*x^9+88*x^8+94*x^7+92*x^6+5*x^5+40*x^4+79*x^3+96*x^2+14*x+51)*y+
+	(41*x^10+90*x^9+68*x^8+19*x^7+87*x^6+27*x^5+84*x^4+84*x^3+18*x^2+31*x+33)
+
+
+# Third computation 
+
+From $r_1$ 
+
+
+	(9*x^10+10*x^9+38*x^8+53*x^7+42*x^6+62*x^5+28*x^4+14*x^3+49*x^2+44*x+15)*y^2+
+	(11*x^10+37*x^9+72*x^8+38*x^7+91*x^6+91*x^5+22*x^4+23*x^3+95*x^2+44*x+89)*y+
+	(48*x^10+83*x^9+14*x^8+81*x^7+87*x^5+47*x^4+17*x^3+23*x^2+59*x+37)
+
+and $r_2$ 
+
+	(84*x^10+42*x^9+88*x^8+94*x^7+92*x^6+5*x^5+40*x^4+79*x^3+96*x^2+14*x+51)*y+
+	(41*x^10+90*x^9+68*x^8+19*x^7+87*x^6+27*x^5+84*x^4+84*x^3+18*x^2+31*x+33)
+
+we compute $Q_2, f_2$ 
 
 	[[0, 1], [72*x^2+46*x+2, y+72+67*x], x^2 + 34*x + 42
 
-At this step, we have $2= deg(r_3) \ne deg(r_2) -1 = 3$ 
- 
-	(23*x^10+62*x^9+38*x^8+40*x^7+35*x^6+58*x^5+31*x^4+4*x^3+92*x^2+53*x+41)*y^2
-	(93*x^10+3*x^9+88*x^8+41*x^7+49*x^6+64*x^5+19*x^4+3*x^3+62*x^2+42*x+43)*y+
-	34*x^10+4*x^9+94*x^8+27*x^7+83*x^6+28*x^5+87*x^4+38*x^3+54*x^2+6*x+2
 
-# The degree sequence is no longer normal
+After this the algorithm stops and outputs $Q20 = Q2.Q1.Q0 rem f_0$, the list
+$[Q_2, Q_1, Q_0]$ and $[f_2,f_1,f_0]$ 
 
-We can stop the computation of the remainders, we have enough informations to
-reconstruct a Gröbner basis of the ideal of relation. 
-
-The next computations correspond to the iterative version of the ones done in
-Algorithm 3 GuessingBivar(𝒖) in the loop on line 6
+And as before we start the computation done in the loop on line 6
+of Algorithm 3 GuessingBivar(𝒖) to compute a Gröbner basis of $I(u)$
 
 $Q10 := Q1.Q0$ 
 
