@@ -62,6 +62,7 @@ $$
 $b_0 := HankelSolver(lc(r_0), lc(r_1^{tmp}), f_0)$: 
 
 We can then compute the quotient matrix
+
 $$
 Q_0 = 
 \begin{bmatrix}
