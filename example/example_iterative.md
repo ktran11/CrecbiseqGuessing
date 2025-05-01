@@ -181,7 +181,17 @@ $$
 
 ### Second loop
 
-The matrix product $Q_2 Q_1 Q_0 = \begin{bmatrix} s_2 & t_2 \\ s_3 & t_3 \\ \end{bmatrix}$ where
+The matrix product
+
+$$
+Q_2 Q_1 Q_0 = 
+\begin{bmatrix} 
+s_2 & t_2 \\ 
+s_3 & t_3 \\ 
+\end{bmatrix}
+$$
+
+where
 
 $$
 \begin{align*}
