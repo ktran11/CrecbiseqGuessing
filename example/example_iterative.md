@@ -61,14 +61,13 @@ $$
 
 $b_0 := HankelSolver(lc(r_0), lc(r_1^{tmp}), f_0)$: 
 
-We can then compute the quotient matrix $Q_0$
-
+We can then compute the quotient matrix
 $$
+Q_0 = 
 \begin{bmatrix}
 0 & 1 \\
 a_0 &  y - b_0 \\
-\end{bmatrix}
-=
+\end{bmatrix} =
 \begin{bmatrix}
 0 & 1 \\
 96 &  y + 4x^4+53x^3+33x^2+92x+59 \\
@@ -92,74 +91,119 @@ $$
   
 ## Computation of $Q_1, f_1$ and $r_2$ 
 
-With the same method, we can compute $Q_1, f_1$
-    
-    [[0,1], [16x^4+31x^3+64x^2+52x+82, y + 25x^2+90x+78]],x^3+x^2+84x+69
+With the same method, we can compute
 
-and the remainder $r_2$ by construction we have eliminate the coefficient in $y^5$
+$$
+Q_1 = 
+\begin{bmatrix}
+0 & 1 \\
+16x^4+31x^3+64x^2+52x+82 & y + 25x^2+90x+78 \\
+\end{bmatrix},
+\quad f_1 = x^3+x^2+84x+69
+$$
 
-    (84x^{10}+42x^9+88x^8+94x^7+92x^6+5x^5+40x^4+79x^3+96x^2+14x+51)y^4+
-    (41x^{10}+90x^9+68x^8+19x^7+87x^6+27x^5+84x^4+84x^3+18x^2+31x+33)y^3+
-    (64x^{10}+73x^9+68x^8+54x^7+61x^6+23x^5+51x^4+16x^3+30x^2+54x+8)y^2+
-    (13x^{10}+38x^9+13x^8+55x^7+90x^6+80x^5+77x^4+38x^3+11x^2+21x+69)y+
-     37x^{10}+17x^9+61x^8+30x^7+48x^6+52x^5+54x^4+65x^3+83x^2+41x+93
+and the remainder $r_2$, whose coefficient in $y^5$ has been eliminated by construction,
+
+$$
+\begin{align*}
+r_2 := & a_1 r_{0} + (y-b_1) r_1 \\
+  = & (84x^{10}+42x^9+88x^8+94x^7+92x^6+5x^5+40x^4+79x^3+96x^2+14x+51)y^4 \\
+    & + (41x^{10}+90x^9+68x^8+19x^7+87x^6+27x^5+84x^4+84x^3+18x^2+31x+33)y^3 \\
+    & + (64x^{10}+73x^9+68x^8+54x^7+61x^6+23x^5+51x^4+16x^3+30x^2+54x+8)y^2 \\
+    & + (13x^{10}+38x^9+13x^8+55x^7+90x^6+80x^5+77x^4+38x^3+11x^2+21x+69)y \\
+    & +  37x^{10}+17x^9+61x^8+30x^7+48x^6+52x^5+54x^4+65x^3+83x^2+41x+93 \\
+\end{align*}
+$$
+
+**TODO : Rappeler la notion de $\cdot_{f_0}$, sans quoi on aurait des termes parasites en $y^5$**
 
 ## Computation of $Q_2, f_2$ and $r_3$ 
-We continue for the computation of the remainder $r_3$, we have the quotient
+We continue with the computation of the remainder $r_3$, which requires the quotient
 matrix $Q_2$ and the C-relation $f_2$
 
-    [[0, 1], [72x^2+46x+2, y+72+67x], x^2 + 34x + 42
+$$
+Q_2 = 
+\begin{bmatrix}
+0 & 1 \\
+72x^2+46x+2 & y+72+67x \\
+\end{bmatrix},
+\quad f_2 = x^2 + 34x + 42
+$$
 
-At this step, we have $2= deg(r_3) \ne deg(r_2) -1 = 3$ 
- 
-    (23x^{10}+62x^9+38x^8+40x^7+35x^6+58x^5+31x^4+4x^3+92x^2+53x+41)y^2
-    (93x^{10}+3x^9+88x^8+41x^7+49x^6+64x^5+19x^4+3x^3+62x^2+42x+43)y+
-    34x^{10}+4x^9+94x^8+27x^7+83x^6+28x^5+87x^4+38x^3+54x^2+6x+2
+and the remainder $r_3$, whose coefficient in $y^4$ has been eliminated by construction,
+
+$$
+\begin{align*}
+r_3 := & a_2 r_{1} + (y-b_2) r_2 \\
+  = & (23x^{10}+62x^9+38x^8+40x^7+35x^6+58x^5+31x^4+4x^3+92x^2+53x+41)y^2  \\
+    & + (93x^{10}+3x^9+88x^8+41x^7+49x^6+64x^5+19x^4+3x^3+62x^2+42x+43)y  \\
+    & + 34x^{10}+4x^9+94x^8+27x^7+83x^6+28x^5+87x^4+38x^3+54x^2+6x+2  \\
+\end{align*}
+$$
+
+**TODO: Expliquer pourquoi $r_3$ n'est pas nul : À cause de la perte de précision en $y$ qui génère des termes parasites de petit degrés en $y$.**
 
 ## The degree sequence is no longer normal
+
+At this step, we have $2= \deg(r_3) \ne \deg(r_2) -1 = 3$. 
 
 We can stop the computation of the remainders, we have enough informations to
 reconstruct a Gröbner basis of the ideal of relation. 
 
-The next computations correspond to the iterative version of the ones done in
-Algorithm 3 GuessingBivar(𝒖) in the loop on line 6
+## `GuessingBivar`
 
-$Q10 := Q1.Q0$ 
+`GuessingBivar` initialization sets $f_0$ as the first element $g_0$ of the Grobner basis.
 
-    [[96, y+4x^4+53x^3+33x^2+92x+59],[96y+72x^2+7x+19,
-    y^2+4yx^4+53yx^3+58yx^2+85yx+40y+72x^4+67x^3+74x^2+23x+83]]
+The next computations correspond to the `for` loop on line 6 of Algorithm 3 `GuessingBivar(𝒖)`.
 
-$t1 := Q10[1,2]$ 
-    
-    y+4x^4+53x^3+33x^2+92x+59
+### First loop
 
-$g1 := t1f1$ rem $f0$
+The matrix product $Q_1Q_0$ is
 
-    (x^3+x^2+84x+69)y+ 30x^4+59x^3+27x^2+44x+61
+$$
+\begin{bmatrix}
+96 & y+4x^4+53x^3+33x^2+92x+59 \\
+96y+72x^2+7x+19 & y^2+(4x^4+53x^3+58x^2+85x+40)y+72x^4+67x^3+74x^2+23x+83 \\
+\end{bmatrix}
+$$
 
-$Q20 := Q_2.Q_1.Q_0$
-    
-    [[96y+72x^2+7x+19, y^2+4yx^4+53yx^3+58yx^2+85yx+40y+72x^4+67x^3+74x^2+23x+83],
-    [96y^2+72yx^2+37yx+44y+71x^3+52x^2+82x+8,
-    y^3+4y^2x^4+53y^2x^3+58y^2x^2+55y^2x+15y^2+53yx^4+74yx^3+51yx^2+78yx+20y+33x^4+14x^3+70x^2+87x+71]]
-    
-$t2 := Q20[1,2]$
+whose entry on the first line, second column is $t_1 = y+4x^4+53x^3+33x^2+92x+59$.
+Its modular product $g_1 := t_1f_1 \bmod f_0$ is the second element of the Grobner basis.
+$$
+g_1 = (x^3+x^2+84x+69)y+ 30x^4+59x^3+27x^2+44x+61
+$$
 
-    y^2+(4x^4+53x^3+58x^2+85x+40)y+72x^4+67x^3+74x^2+23x+83
+### Second loop
 
-$g2 := t2f2$ rem $f0$
+The matrix product $Q_2 Q_1 Q_0 = \begin{bmatrix} s_2 & t_2 \\ s_3 & t_3 \\ \end{bmatrix}$ where
 
-    (x^2+34x+42)y^2+
-    (58x^4+62x^3+38x^2+90x+4)y+
-    50x^4+39x^3+36x^2+34x+94
+$$
+\begin{align*}
+s_2 = & 96y+72x^2+7x+19\\
+t_2 = & y^2+(4x^4+53x^3+58x^2+85x+40)y+72x^4+67x^3+74x^2+23x+83\\
+s_3 = & 96y^2+(72x^2+37x+44)y+71x^3+52x^2+82x+8\\
+t_3 = & y^3+(4x^4+53x^3+58x^2+55x+15)y^2+(53x^4+74x^3+51x^2+78x+20)y \\
+      & +33x^4+14x^3+70x^2+87x+71\\
+\end{align*}
+$$
+Its modular product $g_2 := t_2 f_2 \bmod f_0$ is the third element of the Grobner basis.
+$$
+g_1 = (x^2+34x+42)y^2+ (58x^4+62x^3+38x^2+90x+4)y+ 50x^4+39x^3+36x^2+34x+94
+$$
 
-$tdy = Q20[2,2]$ 
+### After the loop
 
-    y^3+(4x^4+53x^3+58x^2+55x+15)y^2+(53x^4+74x^3+51x^2+78x+20)y+33x^4+14x^3+70x^2+87x+71
+The loop stops after its second iteration because the degree sequence is no longer normal.
+The last step 11 of Algorithm 3 `GuessingBivar(𝒖)` appends $g_3 := t_{d_y} = t_3$ to the Grobner basis. 
 
 ## Output 
 
-G := \{f_0, g1, g2, tdy\}; 
+$G := \{f_0, g_1, g_2, t_{d_y}\};$
+
+$$
+\begin{align*}
+\end{align*}
+$$
 
     \{ 
     x^5+60x^4+45x^3+77x^2+10x+28
