@@ -169,6 +169,7 @@ $$
 
 whose entry on the first line, second column is $t_1 = y+4x^4+53x^3+33x^2+92x+59$.
 Its modular product $g_1 := t_1f_1 \bmod f_0$ is the second element of the Grobner basis.
+
 $$
 g_1 = (x^3+x^2+84x+69)y+ 30x^4+59x^3+27x^2+44x+61
 $$
@@ -186,9 +187,11 @@ t_3 = & y^3+(4x^4+53x^3+58x^2+55x+15)y^2+(53x^4+74x^3+51x^2+78x+20)y \\
       & +33x^4+14x^3+70x^2+87x+71\\
 \end{align*}
 $$
+
 Its modular product $g_2 := t_2 f_2 \bmod f_0$ is the third element of the Grobner basis.
+
 $$
-g_1 = (x^2+34x+42)y^2+ (58x^4+62x^3+38x^2+90x+4)y+ 50x^4+39x^3+36x^2+34x+94
+g_2 = (x^2+34x+42)y^2+ (58x^4+62x^3+38x^2+90x+4)y+ 50x^4+39x^3+36x^2+34x+94
 $$
 
 ### After the loop
