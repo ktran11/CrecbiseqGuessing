@@ -201,22 +201,21 @@ The last step 11 of Algorithm 3 `GuessingBivar(𝒖)` appends $g_3 := t_{d_y} = 
 
 ## Output 
 
-$G := \{f_0, g_1, g_2, t_{d_y}\};$
+The minimal Grobner basis on output is $G := \{f_0, g_1, g_2, t_{d_y}\}$, with 
 
 $$
 \begin{align*}
+f_0 = &     x^5+60x^4+45x^3+77x^2+10x+28\\
+g_1 = &     (x^3+x^2+84x+69)y+ 30x^4+59x^3+27x^2+44x+61,\\
+g_2 = &     (x^2+34x+42)y^2+ (58x^4+62x^3+38x^2+90x+4)y+ 50x^4+39x^3+36x^2+34x+94,\\
+t_{d_y} = &    y^3+(4x^4+53x^3+58x^2+55x+15)y^2+(53x^4+74x^3+51x^2+78x+20)y \\
+          & + 33x^4+14x^3+70x^2+87x+71 \\ 
 \end{align*}
 $$
 
-    \{ 
-    x^5+60x^4+45x^3+77x^2+10x+28
-    (x^3+x^2+84x+69)y+ 30x^4+59x^3+27x^2+44x+61,
-    (x^2+34x+42)y^2+ (58x^4+62x^3+38x^2+90x+4)y+ 50x^4+39x^3+36x^2+34x+94,
-    y^3+(4x^4+53x^3+58x^2+55x+15)y^2+(53x^4+74x^3+51x^2+78x+20)y+33x^4+14x^3+70x^2+87x+71 
-    \}
+This Grobner basis do not match $G_u$ because $G$ is only minimal whereas $G_u$ is reduced, *i.e* minimal and the elements in the basis are reduced w.r.t. the other ones.
 
-The polynomials in the output have exactly the same leading monomials as all the
-ones in $G_u$. Furthermore, the command
-Groebner:-InterReduce(G,plex(y,x),characteristic=97) yields the same polynomials
-as in $G_u$, hence the output is a minimal Gröbner of $I(u)$ 
-
+Note that $G$ has exactly the same leading monomials as all the ones in $G_u$. 
+Furthermore, the `Maple` command
+`Groebner:-InterReduce(G,plex(y,x),characteristic=97)` yields the same polynomials
+as in $G_u$, hence the output $G$ is a minimal Gröbner of $I(u)$.
