@@ -115,7 +115,9 @@ r_2 := & a_1 r_{0} + (y-b_1) r_1 \\
 \end{align*}
 $$
 
+<!---
 **TODO : Rappeler la notion de $\cdot_{f_0}$, sans quoi on aurait des termes parasites en $y^5$**
+-->
 
 ## Computation of $Q_2, f_2$ and $r_3$ 
 We continue with the computation of the remainder $r_3$, which requires the quotient
@@ -141,7 +143,9 @@ r_3 := & a_2 r_{1} + (y-b_2) r_2 \\
 \end{align*}
 $$
 
+<!---
 **TODO: Expliquer pourquoi $r_3$ n'est pas nul : À cause de la perte de précision en $y$ qui génère des termes parasites de petit degrés en $y$.**
+-->
 
 ## The degree sequence is no longer normal
 
